@@ -1,6 +1,12 @@
+import { useScrollHeader } from "../../hooks/useScrollHeader";
+
 export const Header = () => {
+  const scrolled = useScrollHeader({ threshold: 100 });
+
   return (
-    <header className="text-white fixed top-0 left-0 z-50 p-4 w-full">
+    <header
+      className={`transition-all duration-300 ${scrolled ? "bg-[#002a8d]" : "bg-transparent"} text-white fixed top-0 left-0 z-50 p-4 w-full`}
+    >
       <div className="flex justify-between max-w-[1200px] w-full mx-auto">
         <div className="flex gap-4 items-center">
           <img

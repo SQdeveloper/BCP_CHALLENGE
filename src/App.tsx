@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { Banner } from "./components/Banner/Banner";
 import { Benefits } from "./components/Benefits/Benefits";
 import { useExperiment } from "./hooks/useExperiment";
 import { Layout } from "./layout/Layout";
-import { pushEvent } from "./utils/gtm";
 import { Form } from "./components/Form/Form";
 import { useScrollTracking } from "./hooks/useScrollTracking";
 
