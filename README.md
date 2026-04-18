@@ -20,6 +20,31 @@ Incrementar el CTR del banner principal hacia el formulario, optimizando la expe
 
 ---
 
+## Análisis del experimento
+
+El objetivo del experimento es comparar el CTR entre las variantes A y B.
+
+Para determinar si la variante B es más efectiva, se analizarán las siguientes métricas:
+
+- CTR por variante = click_cta / view_banner
+- Tasa de conversión = submit_form / click_cta
+
+---
+
+### Interpretación
+
+- Si la variante B presenta un CTR significativamente mayor, se valida la hipótesis de que un CTA más directo y mayor contraste visual mejora la conversión.
+- Si no hay diferencia significativa, se concluye que el cambio visual no impacta el comportamiento del usuario.
+- Si la variante A supera a la B, se rechaza la hipótesis inicial.
+
+---
+
+### Decisión
+
+La decisión final se basará en la variante con mejor rendimiento estadístico y consistencia en las métricas de conversión.
+
+---
+
 ## Diseño del experimento
 
 Se implementaron dos variantes del banner:
@@ -28,6 +53,8 @@ Se implementaron dos variantes del banner:
 | -------- | ------- | ---------------- |
 | A        | Azul    | "Solicita ahora" |
 | B        | Naranja | "Aplica ya"      |
+
+---
 
 ### Asignación de variante
 
@@ -119,15 +146,6 @@ window.dataLayer.push();
 
 ---
 
-## Resultados esperados
-
-Se espera que la **variante B (naranja + “Aplica ya”)** genere un mayor CTR debido a:
-
-- Mayor contraste visual
-- Copy más directo y orientado a acción inmediata
-
----
-
 ## Tecnologías utilizadas
 
 - React
@@ -139,13 +157,13 @@ Se espera que la **variante B (naranja + “Aplica ya”)** genere un mayor CTR 
 
 ## Deploy
 
-🔗 [Ver proyecto en GitHub Pages]()
+🔗 [Ver proyecto en GitHub Pages](https://sqdeveloper.github.io/BCP_CHALLENGE/)
 
 ---
 
 ## Repositorio
 
-🔗 [Ver código en GitHub]()
+🔗 [Ver código en GitHub](https://github.com/SQdeveloper/BCP_CHALLENGE)
 
 ---
 
