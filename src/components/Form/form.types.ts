@@ -1,3 +1,5 @@
+import type { BannerType } from "../../types/experiment.types";
+
 export const DOC_RULES = {
   DNI: {
     regex: /\D/g,
@@ -14,6 +16,20 @@ export const DOC_RULES = {
     maxLength: 12,
     inputMode: "text" as const,
   },
+};
+
+export type FormValues = {
+  name: string;
+  email: string;
+};
+
+export type FormErrors = {
+  name: string;
+  email: string;
+};
+
+export type FormProps = {
+  variant: BannerType;
 };
 
 export type DocType = "DNI" | "PASAPORTE" | "CE";
