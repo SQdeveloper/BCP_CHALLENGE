@@ -5,14 +5,6 @@ export const VARIANT_BANNER = {
 
 export type BannerType = (typeof VARIANT_BANNER)[keyof typeof VARIANT_BANNER];
 
-export type BannerConfig = {
-  variant: BannerType;
-};
-
-export interface BannerProps {
-  config: BannerConfig;
-}
-
 export type ExperimentEventName = "experiment_view" | "experiment_event";
 
 export type ExperimentAction =

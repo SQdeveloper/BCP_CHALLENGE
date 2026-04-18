@@ -1,13 +1,22 @@
+import { useEffect } from "react";
 import { Banner } from "./components/Banner/Banner";
 import { Benefits } from "./components/Benefits/Benefits";
+import { useExperiment } from "./hooks/useExperiment";
 import { Layout } from "./layout/Layout";
-import { VARIANT_BANNER } from "./types/experiment.types";
+import { pushEvent } from "./utils/gtm";
+import { Form } from "./components/Form/Form";
+import { useScrollTracking } from "./hooks/useScrollTracking";
 
 function App() {
+  const { variant } = useExperiment();
+
+  useScrollTracking(variant);
+
   return (
     <Layout>
-      <Banner config={{ variant: VARIANT_BANNER.BANNER_B }} />
+      <Banner variant={variant} />
       <Benefits />
+      <Form variant={variant} />
     </Layout>
   );
 }

@@ -1,29 +1,35 @@
-import type { BannerProps, BannerType } from "../../types/experiment.types";
+import { useEffect } from "react";
+import { VARIANT_CONFIG } from "../../constants/experiment.constants";
+import type { BannerType } from "../../types/experiment.types";
+import { useTracking } from "../../hooks/useTracking";
 
-export const Banner = ({ config }: BannerProps) => {
-  const variantStyles: Record<BannerType, string> = {
-    A: "bg-bcp-gradient-blue",
-    B: "bg-bcp-gradient-orange",
-  };
+export const Banner = ({ variant }: { variant: BannerType }) => {
+  const config = VARIANT_CONFIG[variant];
+  const { trackViewBanner, trackClickCTA } = useTracking(variant);
 
-  const variantTextButton: Record<BannerType, string> = {
-    A: "Solicita ahora",
-    B: "Aplica ya",
+  useEffect(() => {
+    trackViewBanner();
+  }, [variant]);
+
+  const handleClick = () => {
+    trackClickCTA(config.text);
+    document.getElementById("form")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section
-      className={`${variantStyles[config.variant]} w-full h-svh flex justify-center`}
-    >
+    <section className={`${config.bg} w-full h-svh flex justify-center`}>
       <div className="flex justify-center items-center h-full gap-4 max-w-[1200px] w-full">
         <div className="flex flex-col text-white w-[50%]">
           <h1 className="leading-[64px] text-[56px] mb-[16px] mt-[30px] font-bold text-balance">
             Pide tu Tarjeta de Crédito BCP
           </h1>
           <p className="text-[24px]">Hazlo en segundos desde la web</p>
-          <div className="mt-[16px] bg-[#ff7800] font-bold rounded-[24px] flex justify-center items-center w-[180px] h-[40px] text-white">
-            {variantTextButton[config.variant]}
-          </div>
+          <button
+            onClick={handleClick}
+            className="mt-[16px] bg-[#ff7800] font-bold rounded-[24px] flex justify-center items-center w-[180px] h-[40px] text-white"
+          >
+            {config.text}
+          </button>
         </div>
         <div>
           <picture>
