@@ -39,6 +39,20 @@ Para determinar si la variante B es más efectiva, se analizarán las siguientes
 
 ---
 
+### Ejemplo de interpretación
+
+- Variante A:
+  - view_banner: 1000
+  - click_cta: 120 → CTR = 12%
+
+- Variante B:
+  - view_banner: 1000
+  - click_cta: 180 → CTR = 18%
+
+Resultado: Variante B mejora el CTR en un 50%.
+
+---
+
 ### Decisión
 
 La decisión final se basará en la variante con mejor rendimiento estadístico y consistencia en las métricas de conversión.
@@ -88,7 +102,7 @@ En un entorno multi-página, se requeriría persistencia adicional (ej. `localSt
 
 ---
 
-### Centralización del tracking
+### uso de Hooks para usar el tracking
 
 Se implementó un hook personalizado (`useScrollTracking`) que:
 
@@ -103,6 +117,16 @@ Se implementó un hook personalizado (`useExperiment`) que:
 - Asigna, guarda y devuelve la variante del experimento A/B para cada usuario.
 
 Esto permite desacoplar la lógica de tracking de los componentes UI.
+
+---
+
+## Implementación de tracking (GTM)
+
+A continuación se muestra cómo se implementan los eventos hacia Google Tag Manager utilizando dataLayer:
+
+![Hook para manejar el tracking GTM](./docs/images/tracking_first.png)
+![Hook para manejar el tracking GTM](./docs/images/tracking_second.png)
+![Usando el hook en el envio del formulario](./docs/images/tracking_third.png)
 
 ---
 

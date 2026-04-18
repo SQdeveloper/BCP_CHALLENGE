@@ -1,20 +1,6 @@
 import { useState } from "react";
-import type { BannerType } from "../../types/experiment.types";
 import { useTracking } from "../../hooks/useTracking";
-
-type FormValues = {
-  name: string;
-  email: string;
-};
-
-type FormErrors = {
-  name: string;
-  email: string;
-};
-
-type FormProps = {
-  variant: BannerType;
-};
+import type { FormErrors, FormProps, FormValues } from "./form.types";
 
 const INITIAL_FORM: FormValues = {
   name: "",
@@ -75,14 +61,14 @@ export const Form = ({ variant }: FormProps) => {
       }));
     };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validate()) return;
 
     trackSubmitForm();
 
-    alert("Formulario enviado 🚀");
+    alert("Formulario enviado");
   };
 
   return (
