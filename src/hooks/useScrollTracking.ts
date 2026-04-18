@@ -6,20 +6,21 @@ export const useScrollTracking = (variant: BannerType) => {
   const { trackScrollForm } = useTracking(variant);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const form = document.getElementById("form");
-      if (!form) return;
+    const form = document.getElementById("form");
+    if (!form) return;
 
-      const rect = form.getBoundingClientRect();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          trackScrollForm();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
 
-      if (rect.top < window.innerHeight) {
-        trackScrollForm();
+    observer.observe(form);
 
-        window.removeEventListener("scroll", handleScroll);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => observer.disconnect();
   }, [variant]);
 };
