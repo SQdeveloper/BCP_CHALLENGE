@@ -1,48 +1,79 @@
 import { useState } from "react";
 import type { BannerType } from "../../types/experiment.types";
 import { useTracking } from "../../hooks/useTracking";
-import { DOC_RULES, type DocType } from "./form.types";
 
-export const Form = ({ variant }: { variant: BannerType }) => {
+type FormValues = {
+  name: string;
+  email: string;
+};
+
+type FormErrors = {
+  name: string;
+  email: string;
+};
+
+type FormProps = {
+  variant: BannerType;
+};
+
+const INITIAL_FORM: FormValues = {
+  name: "",
+  email: "",
+};
+
+const INITIAL_ERRORS: FormErrors = {
+  name: "",
+  email: "",
+};
+
+export const Form = ({ variant }: FormProps) => {
   const { trackSubmitForm } = useTracking(variant);
 
-  const [form, setForm] = useState<{
-    docType: DocType;
-    docNumber: string;
-    code: string;
-  }>({
-    docType: "DNI",
-    docNumber: "",
-    code: "",
-  });
+  const [form, setForm] = useState<FormValues>(INITIAL_FORM);
+  const [errors, setErrors] = useState<FormErrors>(INITIAL_ERRORS);
 
-  const [errors, setErrors] = useState({
-    docNumber: "",
-    code: "",
-  });
-
-  const validate = () => {
-    const newErrors = {
-      docNumber: "",
-      code: "",
+  const validate = (): boolean => {
+    const newErrors: FormErrors = {
+      name: "",
+      email: "",
     };
 
-    if (!form.docNumber) {
-      newErrors.docNumber = "El documento es requerido";
-    } else if (!/^\d{8,12}$/.test(form.docNumber)) {
-      newErrors.docNumber = "Debe tener entre 8 y 12 dígitos";
+    const trimmedName = form.name.trim();
+    const trimmedEmail = form.email.trim();
+
+    if (!trimmedName) {
+      newErrors.name = "El nombre es requerido";
+    } else if (trimmedName.length < 2) {
+      newErrors.name = "El nombre debe tener al menos 2 caracteres";
+    } else if (!/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/.test(trimmedName)) {
+      newErrors.name = "El nombre solo debe contener letras";
     }
 
-    if (!form.code) {
-      newErrors.code = "El código es requerido";
-    } else if (form.code.length < 4) {
-      newErrors.code = "Código inválido";
+    if (!trimmedEmail) {
+      newErrors.email = "El correo electrónico es requerido";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      newErrors.email = "Ingresa un correo electrónico válido";
     }
 
     setErrors(newErrors);
 
-    return !newErrors.docNumber && !newErrors.code;
+    return !newErrors.name && !newErrors.email;
   };
+
+  const handleChange =
+    (field: keyof FormValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+
+      setForm((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+
+      setErrors((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+    };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,96 +85,60 @@ export const Form = ({ variant }: { variant: BannerType }) => {
     alert("Formulario enviado 🚀");
   };
 
-  const handleDocChange = (value: string) => {
-    const rule = DOC_RULES[form.docType];
-
-    let sanitized = value.replace(rule.regex, "");
-    sanitized = sanitized.slice(0, rule.maxLength);
-
-    setForm((prev) => ({
-      ...prev,
-      docNumber: sanitized,
-    }));
-  };
-
   return (
-    <section id="form" className="p-16 scroll-mt-10 w-full">
-      <div className="rounded-xl overflow-hidden mx-auto grid grid-cols-2 w-full max-w-[1200px]">
-        <img src="./src/assets/bg-bcp.png" alt="background de tarjetas bcp" />
+    <section id="form" className="w-full scroll-mt-10 p-16">
+      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-2 overflow-hidden rounded-xl">
+        <img src="/BCP_CHALLENGE/bg-bcp.png" alt="background de tarjetas bcp" />
 
         <form
           onSubmit={handleSubmit}
-          className="bg-[#F3F9FF] pt-12 flex items-center text-center flex-col gap-4 px-4"
+          className="flex flex-col items-center gap-4 bg-[#F3F9FF] px-4 pt-12 text-center"
+          noValidate
         >
-          <h2 className="font-bold text-blue-800 text-3xl">Cards</h2>
+          <h2 className="text-3xl font-bold text-blue-800">Cards</h2>
           <p className="mb-5">Tarjeta de crédito BCP</p>
 
-          <div className="w-full max-w-[380px]">
-            <div className="h-12 flex bg-white border border-gray-600 rounded-md">
-              <select
-                value={form.docType}
-                onChange={(e) =>
-                  setForm({ ...form, docType: e.target.value as DocType })
-                }
-                className="px-2 outline-none"
-              >
-                <option value="DNI">DNI</option>
-                <option value="PASAPORTE">PASAPORTE</option>
-                <option value="CE">CE</option>
-              </select>
-
+          <div className="w-full max-w-[380px] text-start">
+            <div className="flex h-12 rounded-md border border-gray-600 bg-white">
               <input
                 type="text"
-                value={form.docNumber}
-                onChange={(e) => handleDocChange(e.target.value)}
-                inputMode={DOC_RULES[form.docType].inputMode}
-                maxLength={DOC_RULES[form.docType].maxLength}
-                className="flex-1 outline-none border-l px-4"
-                placeholder="Nro de documento"
+                value={form.name}
+                onChange={handleChange("name")}
+                className="w-full px-4 outline-none"
+                placeholder="Nombre completo"
+                autoComplete="name"
               />
             </div>
 
-            {errors.docNumber && (
-              <p className="text-red-500 text-sm text-left mt-1">
-                {errors.docNumber}
+            {errors.name && (
+              <p className="mt-1 text-left text-sm text-red-500">
+                {errors.name}
               </p>
             )}
           </div>
 
           <div className="w-full max-w-[380px] text-start">
-            <div className="h-12 flex border border-gray-600 rounded-md">
-              <img
-                className="h-full"
-                src="./src/assets/code.png"
-                alt="código"
-              />
-
+            <div className="flex h-12 rounded-md border border-gray-600 bg-white">
               <input
-                type="text"
-                value={form.code}
-                onChange={(e) => setForm({ ...form, code: e.target.value })}
-                className="outline-none border-l px-4 w-full"
-                placeholder="Código"
+                type="email"
+                value={form.email}
+                onChange={handleChange("email")}
+                className="w-full px-4 outline-none"
+                placeholder="Correo electrónico"
+                autoComplete="email"
               />
             </div>
 
-            {errors.code && (
-              <p className="text-red-500 text-sm text-left mt-1">
-                {errors.code}
+            {errors.email && (
+              <p className="mt-1 text-left text-sm text-red-500">
+                {errors.email}
               </p>
             )}
-
-            <button
-              type="button"
-              className="font-bold text-sm text-orange-500 mt-1"
-            >
-              Cambiar Código
-            </button>
           </div>
 
           <button
             type="submit"
-            className="bg-[#ff7800] text-white p-3 rounded-full w-[260px] font-bold mt-3"
+            className="mt-3 w-[260px] rounded-full bg-[#ff7800] p-3 font-bold text-white"
           >
             Continuar
           </button>
