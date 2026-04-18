@@ -124,9 +124,30 @@ Esto permite desacoplar la lógica de tracking de los componentes UI.
 
 A continuación se muestra cómo se implementan los eventos hacia Google Tag Manager utilizando dataLayer:
 
+### Typado para el GTM
+
+![Hook para manejar el tracking GTM](./docs/images/tracking_types.png)
+
+### Metodo pushEvent para usar window.dataLayer.push(event)
+
+![Hook para manejar el tracking GTM](./docs/images/tracking_gtm.png)
+
+### Hook para usar el tracking
+
 ![Hook para manejar el tracking GTM](./docs/images/tracking_first.png)
 ![Hook para manejar el tracking GTM](./docs/images/tracking_second.png)
-![Usando el hook en el envio del formulario](./docs/images/tracking_third.png)
+
+### Tracking GTM en el banner
+
+![gtm banner](./docs/images/tracking_banner.png)
+
+### Trancking GTM en el formulario
+
+![gtm formulario](./docs/images/tracking_third.png)
+
+### Trancking GTM cuando el formulario es visualizado a traves del scroll
+
+![gtm formulario](./docs/images/tracking_scrollViewForm.png)
 
 ---
 
