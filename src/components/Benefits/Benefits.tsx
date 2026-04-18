@@ -5,7 +5,7 @@ import { Benefit3 } from "../Icons/benefit3";
 
 export const Benefits = () => {
   return (
-    <section id="benefits" className="bg-[#F3F9FF] py-16">
+    <section id="benefits" className="bg-[#F3F9FF] py-16 scroll-mt-32">
       <div className="max-w-[1200px] mx-auto text-center">
         <h3 className="text-[40px] text-[#002a8d] mb-10 font-bold">
           ¿Qué beneficios te ofrece?

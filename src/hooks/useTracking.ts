@@ -28,9 +28,19 @@ export const useTracking = (variant: BannerType) => {
     });
   };
 
+  const trackScrollForm = () => {
+    pushEvent({
+      event: "experiment_event",
+      action: "scroll_form",
+      variant,
+      label: "form_visible",
+    });
+  };
+
   return {
     trackClickCTA,
     trackSubmitForm,
     trackViewBanner,
+    trackScrollForm,
   };
 };
