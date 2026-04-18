@@ -1,73 +1,163 @@
-# React + TypeScript + Vite
+# Landing de tarjetas de credito BCP – Jefferson Silva Quinto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
 
-Currently, two official plugins are available:
+Este proyecto consiste en el desarrollo de una landing experimental para validar una hipótesis de mejora en la conversión (CTR) hacia el formulario de solicitud de tarjetas de crédito del BCP.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+La solución implementa un experimento A/B, junto con un sistema de tracking mediante `dataLayer`, simulando una integración con Google Tag Manager (GTM).
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Hipótesis
 
-## Expanding the ESLint configuration
+Modificar el color y el mensaje del banner principal puede aumentar el porcentaje de clics (CTR) hacia el formulario de solicitud.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
+
+## Objetivo
+
+Incrementar el CTR del banner principal hacia el formulario, optimizando la experiencia visual y el copy del call-to-action (CTA).
+
+---
+
+## Diseño del experimento
+
+Se implementaron dos variantes del banner:
+
+| Variante | Color   | CTA              |
+| -------- | ------- | ---------------- |
+| A        | Azul    | "Solicita ahora" |
+| B        | Naranja | "Aplica ya"      |
+
+### Asignación de variante
+
+- La variante se asigna de forma aleatoria al usuario.
+- Se persiste en `localStorage` para mantener consistencia durante la sesión.
+
+---
+
+## Arquitectura de la solución
+
+El proyecto sigue una estructura modular basada en separación de responsabilidades:
+
+- **UI Components** → Banner, Benefits, Form
+- **Hooks** → lógica de experimento y tracking
+- **Utils** → integración con GTM (`dataLayer`)
+- **Types** → tipado estricto con TypeScript
+
+---
+
+## Decisiones técnicas
+
+### Single Page Application (SPA)
+
+Se optó por una landing de una sola página para:
+
+- Mantener un funnel completo de conversión
+- Evitar pérdida de atribución entre eventos
+- Simplificar el tracking del experimento
+
+En un entorno multi-página, se requeriría persistencia adicional (ej. `localStorage` o query params) para mantener la variante del experimento.
+
+---
+
+### Centralización del tracking
+
+Se implementó un hook personalizado (`useScrollTracking`) que:
+
+- Maneja eventos automáticos (view, scroll)
+
+Se implementó un hook personalizado (`useTracking`) que:
+
+- Expone funciones para eventos manuales (click, submit)
+
+Se implementó un hook personalizado (`useExperiment`) que:
+
+- Asigna, guarda y devuelve la variante del experimento A/B para cada usuario.
+
+Esto permite desacoplar la lógica de tracking de los componentes UI.
+
+---
+
+## Eventos implementados (GTM)
+
+Todos los eventos se envían mediante:
 
 ```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+window.dataLayer.push();
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Estructura del evento
 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+{
+  event: 'experiment_event',
+  experimentId: 'bcp_banner_test_v1',
+  action: 'click_cta',
+  variant: 'A',
+  label: 'Solicita ahora'
+}
 ```
+
+---
+
+### Eventos trackeados
+
+| Evento           | Acción      | Descripción                    |
+| ---------------- | ----------- | ------------------------------ |
+| experiment_view  | view_banner | Banner visible                 |
+| experiment_event | click_cta   | Click en CTA                   |
+| experiment_event | scroll_form | Formulario visible en viewport |
+| experiment_event | submit_form | Envío del formulario           |
+
+---
+
+## Métricas clave
+
+- **CTR** = `click_cta / view_banner`
+- **Conversion Rate** = `submit_form / click_cta`
+
+---
+
+## Resultados esperados
+
+Se espera que la **variante B (naranja + “Aplica ya”)** genere un mayor CTR debido a:
+
+- Mayor contraste visual
+- Copy más directo y orientado a acción inmediata
+
+---
+
+## Tecnologías utilizadas
+
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+---
+
+## Deploy
+
+🔗 [Ver proyecto en GitHub Pages]()
+
+---
+
+## Repositorio
+
+🔗 [Ver código en GitHub]()
+
+---
+
+## Consideraciones futuras
+
+- Integración real con Google Tag Manager
+- Persistencia de datos para análisis
+- Implementación de test estadístico para validación de resultados
+- Escalabilidad a múltiples experimentos simultáneos
+
+---
+
+## Autor
+
+Jefferson Silva Quinto
