@@ -5,7 +5,7 @@ import { Benefit3 } from "../Icons/benefit3";
 
 export const Benefits = () => {
   return (
-    <section id="benefits" className="bg-[#F3F9FF] py-16 scroll-mt-32">
+    <section id="benefits" className="bg-[#F3F9FF] py-16 scroll-mt-32 px-16">
       <div className="max-w-[1200px] mx-auto text-center">
         <h3 className="text-[40px] text-[#002a8d] mb-10 font-bold">
           ¿Qué beneficios te ofrece?
@@ -28,7 +28,7 @@ export const Benefits = () => {
           />
         </div>
         <button className="mx-auto mt-16 bg-[#ff7800] font-bold rounded-[24px] flex justify-center items-center w-[180px] h-[40px] text-white">
-          Pídela aquí
+          Descubre tu oferta
         </button>
       </div>
     </section>

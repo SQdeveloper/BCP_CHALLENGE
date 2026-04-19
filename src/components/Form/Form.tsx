@@ -81,7 +81,9 @@ export const Form = ({ variant }: FormProps) => {
           className="flex flex-col items-center gap-4 bg-[#F3F9FF] px-4 pt-12 text-center"
           noValidate
         >
-          <h2 className="text-3xl font-bold text-blue-800">Cards</h2>
+          <h2 className="text-3xl font-bold text-blue-800">
+            Consigue tu tarjeta
+          </h2>
           <p className="mb-5">Tarjeta de crédito BCP</p>
 
           <div className="w-full max-w-[380px] text-start">

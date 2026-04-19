@@ -4,6 +4,8 @@ import { useExperiment } from "./hooks/useExperiment";
 import { Layout } from "./layout/Layout";
 import { Form } from "./components/Form/Form";
 import { useScrollTracking } from "./hooks/useScrollTracking";
+import { Promotions } from "./components/Promotions/Promotions";
+import { BannerSecurity } from "./components/BannerSecurity/BannerSecurity";
 
 function App() {
   const { variant } = useExperiment();
@@ -13,7 +15,9 @@ function App() {
   return (
     <Layout>
       <Banner variant={variant} />
+      <Promotions />
       <Benefits />
+      <BannerSecurity />
       <Form variant={variant} />
     </Layout>
   );
