@@ -206,12 +206,6 @@ window.dataLayer.push();
 
 ---
 
-## Repositorio
-
-🔗 [Ver código en GitHub](https://github.com/SQdeveloper/BCP_CHALLENGE)
-
----
-
 ## Consideraciones futuras
 
 - Integración real con Google Tag Manager

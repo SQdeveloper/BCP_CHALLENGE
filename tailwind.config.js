@@ -9,6 +9,9 @@ export default {
         "bcp-gradient-orange":
           "linear-gradient(126.97deg, #FF7A00 0.91%, #2A0F00 67.25%)",
       },
+      fontFamily: {
+        oswald: ["Oswald", "sans-serif"],
+      },
     },
   },
   plugins: [],
